@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "RubiksCube.h"
+#include "RubiksCube.hpp"
 
 // Проверка на нахождении кубика-рубика в первом состоянии
 bool CheckFirstStateRC(const t_RC RC);

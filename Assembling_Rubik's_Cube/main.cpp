@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <Windows.h>
-#include "RubiksCube.h"
-#include "KociembaAlgorithm.h"
+#include "RubiksCube.hpp"
+#include "KociembaAlgorithm.hpp"
 
 using namespace std;
 

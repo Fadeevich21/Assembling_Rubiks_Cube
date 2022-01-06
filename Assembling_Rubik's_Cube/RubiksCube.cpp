@@ -1,5 +1,5 @@
 ﻿#include <iostream>
-#include "RubiksCube.h"
+#include "RubiksCube.hpp"
 #include <cassert>
 
 t_RC CreateRC(void)
