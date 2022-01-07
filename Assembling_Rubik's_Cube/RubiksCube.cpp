@@ -168,7 +168,6 @@ void WriteNotationRC(const t_NotationRC &notation)
 	std::cout << std::endl;
 }
 
-/*
 void DisassemblyRC(t_RC &RC, const t_NotationRC &notation)
 {
 	for (t_ElNotationRC elNotation : notation)
@@ -216,7 +215,6 @@ void DisassemblyRC(t_RC &RC, const t_NotationRC &notation)
 			RotateBDoubleTurnRC(RC);
 	}
 }
-*/
 
 void RotateSideClockwiseRC(t_SideRC &sideRC)
 {
@@ -229,6 +227,16 @@ void RotateSideClockwiseRC(t_SideRC &sideRC)
 	SWAP2(t_ElRC, sideRC[0][1], sideRC[1][COUNT_EL_RC - 1]);
 	SWAP2(t_ElRC, sideRC[0][1], sideRC[1][0]);
 	SWAP2(t_ElRC, sideRC[1][0], sideRC[COUNT_EL_RC - 1][1]);
+}
+
+void ReverseRowRC(t_SideRC &sideRC, const int &numRowSideRC)
+{
+	SWAP2(t_ElRC, sideRC[numRowSideRC][0], sideRC[numRowSideRC][COUNT_EL_RC - 1]);
+}
+
+void ReverseColumnRC(t_SideRC &sideRC, const int &numColumnSideRC)
+{
+	SWAP2(t_ElRC, sideRC[0][numColumnSideRC], sideRC[COUNT_EL_RC - 1][numColumnSideRC]);
 }
 
 void SwapRowsRC(t_SideRC &side1RC, const int &numRowSide1RC, t_SideRC &side2RC, const int &numRowSide2RC)
@@ -270,22 +278,26 @@ void RotateLClockwiseRC(t_RC &RC)
 {
 	RotateSideClockwiseRC(RC[t_SideRotateRC::left]);
 	
-	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
-	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
+	ReverseColumnRC(RC[t_SideRotateRC::down], 0);
+	ReverseColumnRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1);
+//	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
+//	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
 	SwapColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::front], 0);
-	SwapColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::back], 0);
-	SwapColumnsRC(RC[t_SideRotateRC::back], 0, RC[t_SideRotateRC::down], 0);
+	SwapColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::back], COUNT_EL_RC - 1);
+	SwapColumnsRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], 0);
 }
 
 void RotateRClockwiseRC(t_RC &RC)
 {
 	RotateSideClockwiseRC(RC[t_SideRotateRC::right]);
 
-	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
-	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
+	ReverseColumnRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1);
+	ReverseColumnRC(RC[t_SideRotateRC::back], 0);
+//	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
+//	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
 	SwapColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::front], COUNT_EL_RC - 1);
 	SwapColumnsRC(RC[t_SideRotateRC::front], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
-	SwapColumnsRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+	SwapColumnsRC(RC[t_SideRotateRC::back], 0, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
 }
 
 void RotateUClockwiseRC(t_RC &RC)
@@ -310,8 +322,10 @@ void RotateFClockwiseRC(t_RC &RC)
 {
 	RotateSideClockwiseRC(RC[t_SideRotateRC::front]);
 
-	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
-	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
+	ReverseColumnRC(RC[t_SideRotateRC::left], COUNT_EL_RC - 1);
+	ReverseColumnRC(RC[t_SideRotateRC::right], 0);
+//	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
+//	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::right], 0);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::left], COUNT_EL_RC - 1);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::down], 0, RC[t_SideRotateRC::left], COUNT_EL_RC - 1);
@@ -321,8 +335,10 @@ void RotateBClockwiseRC(t_RC &RC)
 {
 	RotateSideClockwiseRC(RC[t_SideRotateRC::back]);
 
-	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
-	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
+	ReverseRowRC(RC[t_SideRotateRC::up], 0);
+	ReverseRowRC(RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+//	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
+//	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::down], COUNT_EL_RC - 1, RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::down], COUNT_EL_RC - 1, RC[t_SideRotateRC::left], 0);
@@ -346,22 +362,26 @@ void RotateLCounterClockwiseRC(t_RC &RC)
 {
 	RotateSideCounterClockwiseRC(RC[t_SideRotateRC::left]);
 
-	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
-	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
+	ReverseColumnRC(RC[t_SideRotateRC::up], 0);
+	ReverseColumnRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1);
+//	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
+//	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
 	SwapColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::front], 0);
 	SwapColumnsRC(RC[t_SideRotateRC::front], 0, RC[t_SideRotateRC::down], 0);
-	SwapColumnsRC(RC[t_SideRotateRC::back], 0, RC[t_SideRotateRC::down], 0);
+	SwapColumnsRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], 0);
 }
 
 void RotateRCounterClockwiseRC(t_RC &RC)
 {
 	RotateSideCounterClockwiseRC(RC[t_SideRotateRC::right]);
 
-	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
-	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
+	ReverseColumnRC(RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+	ReverseColumnRC(RC[t_SideRotateRC::back], 0);
+//	std::reverse(RC[t_SideRotateRC::back].begin(), RC[t_SideRotateRC::back].end());
+//	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
 	SwapColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::front], COUNT_EL_RC - 1);
-	SwapColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::back], COUNT_EL_RC - 1);
-	SwapColumnsRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+	SwapColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::back], 0);
+	SwapColumnsRC(RC[t_SideRotateRC::back], 0, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
 }
 
 void RotateUCounterClockwiseRC(t_RC &RC)
@@ -386,8 +406,10 @@ void RotateFCounterClockwiseRC(t_RC &RC)
 {
 	RotateSideCounterClockwiseRC(RC[t_SideRotateRC::front]);
 
-	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
-	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
+	ReverseRowRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1);
+	ReverseRowRC(RC[t_SideRotateRC::down], 0);
+//	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
+//	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::right], 0);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::down], 0, RC[t_SideRotateRC::right], 0);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::down], 0, RC[t_SideRotateRC::left], COUNT_EL_RC - 1);
@@ -397,8 +419,10 @@ void RotateBCounterClockwiseRC(t_RC &RC)
 {
 	RotateSideCounterClockwiseRC(RC[t_SideRotateRC::back]);
 
-	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
-	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
+	ReverseColumnRC(RC[t_SideRotateRC::left], 0);
+	ReverseColumnRC(RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
+//	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
+//	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::left], 0);
 	SwapRowAndColumnsRC(RC[t_SideRotateRC::down], COUNT_EL_RC - 1, RC[t_SideRotateRC::left], 0);
@@ -420,34 +444,72 @@ void RotateLDoubleTurnRC(t_RC &RC)
 {
 	RotateSideDoubleTurnRC(RC[t_SideRotateRC::left]);
 
+	ReverseColumnRC(RC[t_SideRotateRC::front], 0);
+	ReverseColumnRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1);
+//	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
+//	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
+	SwapColumnsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::down], 0);
+	SwapColumnsRC(RC[t_SideRotateRC::back], COUNT_EL_RC - 1, RC[t_SideRotateRC::front], 0);
 }
 
 void RotateRDoubleTurnRC(t_RC &RC)
 {
 	RotateSideDoubleTurnRC(RC[t_SideRotateRC::right]);
 
+	ReverseColumnRC(RC[t_SideRotateRC::front], COUNT_EL_RC - 1);
+	ReverseColumnRC(RC[t_SideRotateRC::back], 0);
+//	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
+//	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
+	SwapColumnsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+	SwapColumnsRC(RC[t_SideRotateRC::back], 0, RC[t_SideRotateRC::front], COUNT_EL_RC - 1);
 }
 
 void RotateUDoubleTurnRC(t_RC &RC)
 {
 	RotateSideDoubleTurnRC(RC[t_SideRotateRC::up]);
 
+	SwapRowsRC(RC[t_SideRotateRC::front], 0, RC[t_SideRotateRC::back], 0);
+	SwapRowsRC(RC[t_SideRotateRC::left], 0, RC[t_SideRotateRC::right], 0);
 }
 
 void RotateDDoubleTurnRC(t_RC &RC)
 {
 	RotateSideDoubleTurnRC(RC[t_SideRotateRC::down]);
 
+	SwapRowsRC(RC[t_SideRotateRC::front], COUNT_EL_RC - 1, RC[t_SideRotateRC::back], COUNT_EL_RC - 1);
+	SwapRowsRC(RC[t_SideRotateRC::left], COUNT_EL_RC - 1, RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
 }
 
 void RotateFDoubleTurnRC(t_RC &RC)
 {
 	RotateSideDoubleTurnRC(RC[t_SideRotateRC::front]);
 
+	ReverseColumnRC(RC[t_SideRotateRC::left], COUNT_EL_RC - 1);
+	ReverseColumnRC(RC[t_SideRotateRC::right], 0);
+	ReverseRowRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1);
+	ReverseRowRC(RC[t_SideRotateRC::down], 0);
+//	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
+//	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
+//	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
+//	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
+
+	SwapRowsRC(RC[t_SideRotateRC::up], COUNT_EL_RC - 1, RC[t_SideRotateRC::down], 0);
+	SwapColumnsRC(RC[t_SideRotateRC::left], COUNT_EL_RC - 1, RC[t_SideRotateRC::right], 0);
 }
 
 void RotateBDoubleTurnRC(t_RC &RC)
 {
 	RotateSideDoubleTurnRC(RC[t_SideRotateRC::back]);
 
+	ReverseColumnRC(RC[t_SideRotateRC::left], 0);
+	ReverseColumnRC(RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
+	ReverseRowRC(RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+	ReverseRowRC(RC[t_SideRotateRC::up], 0);
+//	std::reverse(RC[t_SideRotateRC::up].begin(), RC[t_SideRotateRC::up].end());
+//	std::reverse(RC[t_SideRotateRC::down].begin(), RC[t_SideRotateRC::down].end());
+//	std::reverse(RC[t_SideRotateRC::left].begin(), RC[t_SideRotateRC::left].end());
+//	std::reverse(RC[t_SideRotateRC::right].begin(), RC[t_SideRotateRC::right].end());
+
+	SwapRowsRC(RC[t_SideRotateRC::up], 0, RC[t_SideRotateRC::down], COUNT_EL_RC - 1);
+	SwapColumnsRC(RC[t_SideRotateRC::left], 0, RC[t_SideRotateRC::right], COUNT_EL_RC - 1);
 }

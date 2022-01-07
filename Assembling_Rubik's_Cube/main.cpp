@@ -12,8 +12,30 @@ int main()
 
 	t_RC RC = CreateRC();
 
-	WriteRC(RC);
+	
+	cout << "Введите нотацию кубика-рубика:" << endl;
+	t_NotationRC notationRC = ReadNotationRC();
 
+	cout << "Нотация кубика-рубика:" << endl;
+	WriteNotationRC(notationRC);
+
+	DisassemblyRC(RC, notationRC);
+	
+
+	/*
+	int n = 6;
+	for (int i = 0; i < n; i++)
+	{
+		RotateRClockwiseRC(RC);
+		RotateUClockwiseRC(RC);
+		RotateRCounterClockwiseRC(RC);
+		RotateUCounterClockwiseRC(RC);
+	}
+	*/
+
+	cout << endl << "Вид кубика-рубика" << endl;
+	WriteRC(RC);
+	
 	DoneRC(RC);
 
 	cout << "Привет, мир!" << endl;
